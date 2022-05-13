@@ -15,7 +15,10 @@ const StyledHeader = styled('div', {
   position: 'fixed',
   top: 0,
   left: 0,
-  backgroundColor: isTop ? 'transparent' : red[50],
+  display: 'flex',
+  justifyContent: 'center',
+  alignItems: 'center',
+  backgroundColor: isTop ? 'transparent' : '#fff',
   boxShadow: isTop ? 'none' : '0 2px 12px 0 rgb(36 50 66 / 8%)',
   transition: `background-color ${theme.transitions.duration.shortest}ms ${theme.transitions.easing.easeInOut}`,
 }));
