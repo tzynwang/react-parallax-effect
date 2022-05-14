@@ -18,8 +18,9 @@ const StyledHeader = styled('div', {
   display: 'flex',
   justifyContent: 'center',
   alignItems: 'center',
-  backgroundColor: isTop ? 'transparent' : '#fff',
-  boxShadow: isTop ? 'none' : '0 2px 12px 0 rgb(36 50 66 / 8%)',
+  backgroundColor: isTop ? 'transparent' : 'rgba(255, 255, 255, 60%)',
+  boxShadow: isTop ? 'none' : '0 2px 12px 0 rgb(36, 50, 66, 8%)',
+  backdropFilter: isTop ? 'none' : 'blur(6px)',
   transition: `background-color ${theme.transitions.duration.shortest}ms ${theme.transitions.easing.easeInOut}`,
 }));
 
