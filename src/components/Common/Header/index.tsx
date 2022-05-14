@@ -1,6 +1,5 @@
 import React, { memo } from 'react';
 import { styled } from '@mui/material/styles';
-import { red } from '@mui/material/colors';
 import useIsScrollTopZero from '@Hooks/useIsScrollTopZero';
 
 interface StyledHeaderProps {
