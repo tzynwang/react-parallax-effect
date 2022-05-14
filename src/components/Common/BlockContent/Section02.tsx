@@ -1,4 +1,4 @@
-import React, { memo } from 'react';
+import React, { memo, forwardRef } from 'react';
 import { faker } from '@faker-js/faker';
 import { styled } from '@mui/material/styles';
 import Image from '@Components/Base/Image';
@@ -18,9 +18,10 @@ const CenterContainer = styled('div')(() => ({
   alignItems: 'center',
 }));
 
-function Section02(): React.ReactElement {
+const Section02 = forwardRef<HTMLDivElement>((props, ref) => {
+  // Main
   return (
-    <Base className="SectionBase">
+    <Base ref={ref} className="SectionBase">
       <CenterContainer>
         <Image src={faker.image.cats(640, 480, true)} />
       </CenterContainer>
@@ -29,6 +30,6 @@ function Section02(): React.ReactElement {
       </CenterContainer>
     </Base>
   );
-}
+});
 
 export default memo(Section02);
