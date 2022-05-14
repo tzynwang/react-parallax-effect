@@ -18,7 +18,7 @@ function useIsScrollTopZero(): boolean {
   // Hooks
   useEffect(() => {
     window.addEventListener('scroll', debouncedHandleScroll);
-    () => window.removeEventListener('scroll', debouncedHandleScroll);
+    () => () => window.removeEventListener('scroll', debouncedHandleScroll);
   }, []);
 
   // Main
