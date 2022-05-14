@@ -1,4 +1,5 @@
 import React, { memo } from 'react';
+import cn from 'classnames';
 import { styled } from '@mui/material/styles';
 import type { BodyBlockProps } from './types';
 
@@ -15,6 +16,9 @@ const Base = styled('div', {
   backgroundColor: bgColor ? bgColor : 'transparent',
   [theme.breakpoints.up('md')]: {
     minHeight: '800px',
+    '&.AbsoluteCenter': {
+      display: 'flex',
+    },
   },
 }));
 const Container = styled('div')(() => ({
@@ -23,12 +27,15 @@ const Container = styled('div')(() => ({
 
 function BodyBlock(props: BodyBlockProps): React.ReactElement {
   // States
-  const { children, bgColor } = props;
+  const { children, absoluteCenter, bgColor } = props;
 
   // Main
   return (
-    <Base bgColor={bgColor}>
-      <Container>{children}</Container>
+    <Base
+      bgColor={bgColor}
+      className={cn('BlockBase', absoluteCenter && 'AbsoluteCenter')}
+    >
+      <Container className="BlockContainer">{children}</Container>
     </Base>
   );
 }
