@@ -13,10 +13,12 @@ function useViewportHeight(): number {
 
   // Hooks
   useEffect(() => {
+    setInnerHeight(window.innerHeight);
     window.addEventListener('resize', debouncedHandleResize);
     () => () => window.removeEventListener('resize', debouncedHandleResize);
   }, []);
 
+  // Main
   return innerHeight;
 }
 
