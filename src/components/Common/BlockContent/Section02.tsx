@@ -20,13 +20,12 @@ const CenterContainer = styled('div')(() => ({
 
 function Section02(props: Section02Props): React.ReactElement {
   // States
-  const { inViewport, imgSrc, blockRef } = props;
+  const { imgSrc, blockRef, inViewport } = props;
   const [triggerPosition, setTriggerPosition] = useState<number>(0);
   const [offsetY, setOffsetY] = useState<number>(0);
 
   // Functions
   const handleOffset = (): void => {
-    console.info(window.scrollY, triggerPosition);
     if (triggerPosition && window.scrollY - triggerPosition > 0)
       setOffsetY(window.scrollY - triggerPosition);
   };

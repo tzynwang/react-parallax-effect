@@ -5,12 +5,6 @@ import BodyBlock from '@Components/Common/BodyBlock';
 import { Section01, Section02 } from '@Components/Common/BlockContent';
 import useIsInViewport from '@Hooks/useIsInViewport';
 
-export enum BLOCK_IN_VIEW {
-  ONE = 'ONE',
-  TWO = 'TWO',
-  THREE = 'THREE',
-}
-
 const BodyContainer = styled('div')(() => ({
   paddingTop: '54px',
   backgroundColor: purple[50],
