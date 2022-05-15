@@ -15,7 +15,7 @@ function useIsInViewport(target: React.RefObject<HTMLDivElement>): boolean {
       );
     }
   };
-  const debouncedHandleScroll = debounce(handleScroll, 300);
+  const debouncedHandleScroll = debounce(handleScroll, 50);
 
   // Hooks
   useEffect(() => {
