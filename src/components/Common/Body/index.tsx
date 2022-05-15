@@ -1,9 +1,9 @@
-import React, { memo, createRef, useState, useEffect } from 'react';
+import React, { memo, useRef, useEffect } from 'react';
 import { styled } from '@mui/material/styles';
 import { red, purple, amber } from '@mui/material/colors';
 import BodyBlock from '@Components/Common/BodyBlock';
 import { Section01, Section02 } from '@Components/Common/BlockContent';
-import mathRoundTwoDecimal from '@Tools/mathRoundTwoDecimal';
+import useIsInViewport from '@Hooks/useIsInViewport';
 
 export enum BLOCK_IN_VIEW {
   ONE = 'ONE',
@@ -18,45 +18,12 @@ const BodyContainer = styled('div')(() => ({
 
 function Body(): React.ReactElement {
   // States
-  const block01Ref = createRef<HTMLDivElement>();
-  const block02Ref = createRef<HTMLDivElement>();
-  const block03Ref = createRef<HTMLDivElement>();
-  const [refTops, setRefTops] = useState<number[]>([]); // percentage
-  const [refBottoms, setRefBottoms] = useState<number[]>([]); // percentage
-
-  // Hooks
-  useEffect(() => {
-    if (block01Ref.current && block02Ref.current && block03Ref.current) {
-      setRefTops([
-        mathRoundTwoDecimal(
-          block01Ref.current.getBoundingClientRect().top /
-            document.body.scrollHeight
-        ),
-        mathRoundTwoDecimal(
-          block02Ref.current.getBoundingClientRect().top /
-            document.body.scrollHeight
-        ),
-        mathRoundTwoDecimal(
-          block03Ref.current.getBoundingClientRect().top /
-            document.body.scrollHeight
-        ),
-      ]);
-      setRefBottoms([
-        mathRoundTwoDecimal(
-          block01Ref.current.getBoundingClientRect().bottom /
-            document.body.scrollHeight
-        ),
-        mathRoundTwoDecimal(
-          block02Ref.current.getBoundingClientRect().bottom /
-            document.body.scrollHeight
-        ),
-        mathRoundTwoDecimal(
-          block03Ref.current.getBoundingClientRect().bottom /
-            document.body.scrollHeight
-        ),
-      ]);
-    }
-  }, [block01Ref.current, block02Ref.current, block03Ref.current]);
+  const block01Ref = useRef<HTMLDivElement | null>(null);
+  const block02Ref = useRef<HTMLDivElement | null>(null);
+  const block03Ref = useRef<HTMLDivElement | null>(null);
+  const block01inVP = useIsInViewport(block01Ref);
+  const block02inVP = useIsInViewport(block02Ref);
+  const block03inVP = useIsInViewport(block03Ref);
 
   // Main
   return (
@@ -65,25 +32,16 @@ function Body(): React.ReactElement {
         <Section01 />
       </BodyBlock>
       <BodyBlock bgColor={amber[100]} ref={block01Ref} absoluteCenter>
-        <Section02
-          topPercentage={refTops[0]}
-          bottomPercentage={refBottoms[0]}
-        />
+        <Section02 inViewport={block01inVP} />
       </BodyBlock>
       <BodyBlock bgColor={amber[100]} ref={block02Ref} absoluteCenter>
-        <Section02
-          topPercentage={refTops[1]}
-          bottomPercentage={refBottoms[1]}
-        />
+        <Section02 inViewport={block02inVP} />
       </BodyBlock>
       <BodyBlock bgColor={amber[100]} ref={block03Ref} absoluteCenter>
-        <Section02
-          topPercentage={refTops[2]}
-          bottomPercentage={refBottoms[2]}
-        />
+        <Section02 inViewport={block03inVP} />
       </BodyBlock>
       <BodyBlock bgColor={red[50]}>
-        <div>footer</div>
+        <div style={{ height: '150vh' }}>footer</div>
       </BodyBlock>
     </BodyContainer>
   );

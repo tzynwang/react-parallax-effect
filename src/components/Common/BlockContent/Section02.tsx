@@ -1,7 +1,6 @@
-import React, { memo, forwardRef } from 'react';
+import React, { memo } from 'react';
 import { styled } from '@mui/material/styles';
 import Image from '@Components/Base/Image';
-import useScrollPercentage from '@Hooks/useScrollPercentage';
 import type { Section02Props } from './types';
 
 const Base = styled('div')(({ theme }) => ({
@@ -19,19 +18,15 @@ const CenterContainer = styled('div')(() => ({
   alignItems: 'center',
 }));
 
-const Section02 = forwardRef<HTMLDivElement, Section02Props>((props, ref) => {
+function Section02(props: Section02Props) {
   // States
-  const { topPercentage, bottomPercentage } = props;
-  const currentScrollPercentage = useScrollPercentage();
-  const inView =
-    topPercentage < currentScrollPercentage &&
-    bottomPercentage > currentScrollPercentage;
+  const { inViewport } = props;
 
   // Main
   return (
-    <Base ref={ref} className="SectionBase">
+    <Base className="SectionBase">
       <CenterContainer>
-        <Image src="https://picsum.photos/640/480" inView={inView} />
+        <Image src="https://picsum.photos/640/480" inViewport={inViewport} />
       </CenterContainer>
       <CenterContainer>
         <div>
@@ -45,6 +40,6 @@ const Section02 = forwardRef<HTMLDivElement, Section02Props>((props, ref) => {
       </CenterContainer>
     </Base>
   );
-});
+}
 
 export default memo(Section02);

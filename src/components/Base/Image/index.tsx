@@ -1,19 +1,19 @@
 import { styled } from '@mui/material/styles';
 
 interface ImgProps {
-  inView?: boolean;
+  inViewport?: boolean;
 }
 
 export default styled('img', {
   shouldForwardProp: (prop) =>
-    prop !== 'inView' && prop !== 'scrollTop' && prop !== 'viewportHeight',
-})<ImgProps>(({ inView, theme }) => ({
+    prop !== 'inViewport' && prop !== 'scrollTop' && prop !== 'viewportHeight',
+})<ImgProps>(({ inViewport, theme }) => ({
   width: '100%',
   display: 'block',
   objectFit: 'cover',
-  opacity: inView ? 1 : 0,
+  opacity: inViewport ? 1 : 0,
   // transform:
-  //   inView && scrollTop && viewportHeight
+  //   inViewport && scrollTop && viewportHeight
   //     ? `translateY(${(scrollTop - viewportHeight) / 2}px)`
   //     : 'unset',
   transitionProperty: 'opacity',
