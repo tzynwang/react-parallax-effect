@@ -1,4 +1,4 @@
-import React, { memo } from 'react';
+import React, { memo, useEffect, useState } from 'react';
 import { styled } from '@mui/material/styles';
 import Image from '@Components/Base/Image';
 import type { Section02Props } from './types';
@@ -18,15 +18,35 @@ const CenterContainer = styled('div')(() => ({
   alignItems: 'center',
 }));
 
-function Section02(props: Section02Props) {
+function Section02(props: Section02Props): React.ReactElement {
   // States
-  const { inViewport } = props;
+  const { inViewport, imgSrc, blockRef } = props;
+  const [triggerPosition, setTriggerPosition] = useState<number>(0);
+  const [offsetY, setOffsetY] = useState<number>(0);
+
+  // Functions
+  const handleOffset = (): void => {
+    console.info(window.scrollY, triggerPosition);
+    if (triggerPosition && window.scrollY - triggerPosition > 0)
+      setOffsetY(window.scrollY - triggerPosition);
+  };
+
+  // Hooks
+  useEffect(() => {
+    if (blockRef.current) {
+      setTriggerPosition(blockRef.current.getBoundingClientRect().top);
+    }
+  }, [blockRef]);
+  useEffect(() => {
+    window.addEventListener('scroll', handleOffset);
+    () => () => window.removeEventListener('scroll', handleOffset);
+  }, [triggerPosition]);
 
   // Main
   return (
     <Base className="SectionBase">
       <CenterContainer>
-        <Image src="https://picsum.photos/640/480" inViewport={inViewport} />
+        <Image src={imgSrc} inViewport={inViewport} offsetY={offsetY} />
       </CenterContainer>
       <CenterContainer>
         <div>

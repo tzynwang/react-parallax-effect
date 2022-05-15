@@ -1,4 +1,4 @@
-import React, { memo, useRef, useEffect } from 'react';
+import React, { memo, useRef } from 'react';
 import { styled } from '@mui/material/styles';
 import { red, purple, amber } from '@mui/material/colors';
 import BodyBlock from '@Components/Common/BodyBlock';
@@ -32,13 +32,25 @@ function Body(): React.ReactElement {
         <Section01 />
       </BodyBlock>
       <BodyBlock bgColor={amber[100]} ref={block01Ref} absoluteCenter>
-        <Section02 inViewport={block01inVP} />
+        <Section02
+          imgSrc="https://cdn.stocksnap.io/img-thumbs/960w/animals-feline_GWKZ6SI2ED.jpg"
+          blockRef={block01Ref}
+          inViewport={block01inVP}
+        />
       </BodyBlock>
       <BodyBlock bgColor={amber[100]} ref={block02Ref} absoluteCenter>
-        <Section02 inViewport={block02inVP} />
+        <Section02
+          imgSrc="https://cdn.stocksnap.io/img-thumbs/960w/animals-cats_H2G3Y61IGJ.jpg"
+          blockRef={block02Ref}
+          inViewport={block02inVP}
+        />
       </BodyBlock>
       <BodyBlock bgColor={amber[100]} ref={block03Ref} absoluteCenter>
-        <Section02 inViewport={block03inVP} />
+        <Section02
+          imgSrc="https://cdn.stocksnap.io/img-thumbs/960w/animals-cats_UCS90HFBJL.jpg"
+          blockRef={block03Ref}
+          inViewport={block03inVP}
+        />
       </BodyBlock>
       <BodyBlock bgColor={red[50]}>
         <div style={{ height: '150vh' }}>footer</div>
