@@ -1,17 +1,13 @@
 import { useState, useEffect } from 'react';
 import { debounce } from 'lodash';
 
-function useIsScrollTopZero(): boolean {
+function useWindowScrollTop(): number {
   // States
-  const [isTop, setIsTop] = useState(true);
+  const [top, setTop] = useState<number>(0);
 
   // Functions
   const handleScroll = (): void => {
-    if (!window.scrollY) {
-      setIsTop(true);
-    } else {
-      setIsTop(false);
-    }
+    setTop(window.scrollY);
   };
   const debouncedHandleScroll = debounce(handleScroll, 300);
 
@@ -22,7 +18,7 @@ function useIsScrollTopZero(): boolean {
   }, []);
 
   // Main
-  return isTop;
+  return top;
 }
 
-export default useIsScrollTopZero;
+export default useWindowScrollTop;
