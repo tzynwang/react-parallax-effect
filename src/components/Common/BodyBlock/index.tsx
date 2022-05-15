@@ -1,4 +1,4 @@
-import React, { memo } from 'react';
+import React, { memo, forwardRef } from 'react';
 import cn from 'classnames';
 import { styled } from '@mui/material/styles';
 import type { BodyBlockProps } from './types';
@@ -25,19 +25,20 @@ const Container = styled('div')(() => ({
   margin: 'auto',
 }));
 
-function BodyBlock(props: BodyBlockProps): React.ReactElement {
+const BodyBlock = forwardRef<HTMLDivElement, BodyBlockProps>((props, ref) => {
   // States
   const { children, absoluteCenter, bgColor } = props;
 
   // Main
   return (
     <Base
+      ref={ref}
       bgColor={bgColor}
       className={cn('BlockBase', absoluteCenter && 'AbsoluteCenter')}
     >
       <Container className="BlockContainer">{children}</Container>
     </Base>
   );
-}
+});
 
 export default memo(BodyBlock);
