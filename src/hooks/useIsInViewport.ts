@@ -9,10 +9,7 @@ function useIsInViewport(target: React.RefObject<HTMLDivElement>): boolean {
   // Functions
   const handleScroll = (): void => {
     if (target.current && viewportHeight) {
-      setIsInViewport(
-        target.current.getBoundingClientRect().top < viewportHeight / 2 &&
-          target.current.getBoundingClientRect().bottom > viewportHeight / 2
-      );
+      setIsInViewport(target.current.getBoundingClientRect().top < 60 && target.current.getBoundingClientRect().bottom > viewportHeight * 0.75);
     }
   };
   const debouncedHandleScroll = debounce(handleScroll, 50);
