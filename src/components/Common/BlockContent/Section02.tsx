@@ -1,7 +1,7 @@
 import React, { memo } from 'react';
-import { faker } from '@faker-js/faker';
 import { styled } from '@mui/material/styles';
 import Image from '@Components/Base/Image';
+import type { Section02Props } from './types';
 
 const Base = styled('div')(({ theme }) => ({
   display: 'flex',
@@ -18,14 +18,30 @@ const CenterContainer = styled('div')(() => ({
   alignItems: 'center',
 }));
 
-function Section02(): React.ReactElement {
+function Section02(props: Section02Props): React.ReactElement {
+  // States
+  const { imgSrc, inViewport, offsetY, toNegative } = props;
+
+  // Main
   return (
     <Base className="SectionBase">
       <CenterContainer>
-        <Image src={faker.image.cats(640, 480, true)} />
+        <Image
+          src={imgSrc}
+          inViewport={inViewport}
+          offsetY={offsetY}
+          toNegative={toNegative}
+        />
       </CenterContainer>
       <CenterContainer>
-        <div>{faker.lorem.paragraphs(2)}</div>
+        <div>
+          Lorem, ipsum dolor sit amet consectetur adipisicing elit. Amet dolores
+          laudantium itaque nulla eaque necessitatibus atque sit ipsa fugiat,
+          est qui sequi eius voluptatibus tenetur quidem reiciendis soluta
+          deserunt sunt maiores voluptatum? Cum, laboriosam aut! Cupiditate
+          ipsam qui optio tenetur possimus assumenda? Fugit voluptas quisquam
+          modi laborum minus eveniet exercitationem?
+        </div>
       </CenterContainer>
     </Base>
   );
