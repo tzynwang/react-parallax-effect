@@ -2,51 +2,10 @@ import React, { memo, useRef, useState, useEffect } from 'react';
 import { styled } from '@mui/material/styles';
 import { red, purple, amber } from '@mui/material/colors';
 import BodyBlock from '@Components/Common/BodyBlock';
-import { Section01 } from '@Components/Common/BlockContent';
+import { Section01, Section02 } from '@Components/Common/BlockContent';
 import useScrollNegative from '@Hooks/useScrollNegative';
 import useViewportHeight from '@Hooks/useViewportHeight';
 import type { BlocksInVP, TriggerPoints } from './types';
-
-interface ImgProps {
-  inViewport?: boolean;
-  offsetY?: number;
-  toNegative?: boolean;
-}
-
-const Image = styled('img', {
-  shouldForwardProp: (prop) =>
-    prop !== 'inViewport' && prop !== 'offsetY' && prop !== 'toNegative',
-})<ImgProps>(({ inViewport, offsetY, toNegative, theme }) => ({
-  width: '100%',
-  display: 'block',
-  objectFit: 'cover',
-  opacity: 1,
-  transform: 'translateY(0px)',
-  [theme.breakpoints.up('md')]: {
-    opacity: inViewport || toNegative ? 1 : 0,
-    transform: `translateY(${
-      inViewport && offsetY && !toNegative ? offsetY : 0
-    }px)`,
-    transitionProperty: 'opacity',
-    transitionDuration: `${theme.transitions.duration.enteringScreen}ms`,
-    transitionTimingFunction: theme.transitions.easing.sharp,
-  },
-}));
-
-const SectionBase = styled('div')(({ theme }) => ({
-  display: 'flex',
-  flexDirection: 'column',
-  gap: '16px',
-  [theme.breakpoints.up('md')]: {
-    flexDirection: 'row',
-  },
-}));
-const CenterContainer = styled('div')(() => ({
-  flex: '1 1 50%',
-  display: 'flex',
-  justifyContent: 'center',
-  alignItems: 'center',
-}));
 
 const BodyContainer = styled('div')(() => ({
   paddingTop: '54px',
@@ -124,73 +83,28 @@ function Body(): React.ReactElement {
         <Section01 />
       </BodyBlock>
       <BodyBlock bgColor={amber[100]} ref={block01Ref} absoluteCenter>
-        <SectionBase className="SectionBase">
-          <CenterContainer>
-            <Image
-              src="https://cdn.stocksnap.io/img-thumbs/960w/animals-feline_GWKZ6SI2ED.jpg"
-              inViewport={inVP.ref01}
-              offsetY={window.scrollY - triggers.ref01}
-              toNegative={toNegative}
-            />
-          </CenterContainer>
-          <CenterContainer>
-            <div>
-              Lorem, ipsum dolor sit amet consectetur adipisicing elit. Amet
-              dolores laudantium itaque nulla eaque necessitatibus atque sit
-              ipsa fugiat, est qui sequi eius voluptatibus tenetur quidem
-              reiciendis soluta deserunt sunt maiores voluptatum? Cum,
-              laboriosam aut! Cupiditate ipsam qui optio tenetur possimus
-              assumenda? Fugit voluptas quisquam modi laborum minus eveniet
-              exercitationem?
-            </div>
-          </CenterContainer>
-        </SectionBase>
+        <Section02
+          imgSrc="https://cdn.stocksnap.io/img-thumbs/960w/animals-feline_GWKZ6SI2ED.jpg"
+          inViewport={inVP.ref01}
+          offsetY={window.scrollY - triggers.ref01}
+          toNegative={toNegative}
+        />
       </BodyBlock>
       <BodyBlock bgColor={amber[100]} ref={block02Ref} absoluteCenter>
-        <SectionBase className="SectionBase">
-          <CenterContainer>
-            <Image
-              src="https://cdn.stocksnap.io/img-thumbs/960w/animals-cats_H2G3Y61IGJ.jpg"
-              inViewport={inVP.ref02}
-              offsetY={window.scrollY - triggers.ref02}
-              toNegative={toNegative}
-            />
-          </CenterContainer>
-          <CenterContainer>
-            <div>
-              Lorem, ipsum dolor sit amet consectetur adipisicing elit. Amet
-              dolores laudantium itaque nulla eaque necessitatibus atque sit
-              ipsa fugiat, est qui sequi eius voluptatibus tenetur quidem
-              reiciendis soluta deserunt sunt maiores voluptatum? Cum,
-              laboriosam aut! Cupiditate ipsam qui optio tenetur possimus
-              assumenda? Fugit voluptas quisquam modi laborum minus eveniet
-              exercitationem?
-            </div>
-          </CenterContainer>
-        </SectionBase>
+        <Section02
+          imgSrc="https://cdn.stocksnap.io/img-thumbs/960w/animals-cats_H2G3Y61IGJ.jpg"
+          inViewport={inVP.ref02}
+          offsetY={window.scrollY - triggers.ref02}
+          toNegative={toNegative}
+        />
       </BodyBlock>
       <BodyBlock bgColor={amber[100]} ref={block03Ref} absoluteCenter>
-        <SectionBase className="SectionBase">
-          <CenterContainer>
-            <Image
-              src="https://cdn.stocksnap.io/img-thumbs/960w/animals-cats_UCS90HFBJL.jpg"
-              inViewport={inVP.ref03}
-              offsetY={window.scrollY - triggers.ref03}
-              toNegative={toNegative}
-            />
-          </CenterContainer>
-          <CenterContainer>
-            <div>
-              Lorem, ipsum dolor sit amet consectetur adipisicing elit. Amet
-              dolores laudantium itaque nulla eaque necessitatibus atque sit
-              ipsa fugiat, est qui sequi eius voluptatibus tenetur quidem
-              reiciendis soluta deserunt sunt maiores voluptatum? Cum,
-              laboriosam aut! Cupiditate ipsam qui optio tenetur possimus
-              assumenda? Fugit voluptas quisquam modi laborum minus eveniet
-              exercitationem?
-            </div>
-          </CenterContainer>
-        </SectionBase>
+        <Section02
+          imgSrc="https://cdn.stocksnap.io/img-thumbs/960w/animals-cats_UCS90HFBJL.jpg"
+          inViewport={inVP.ref03}
+          offsetY={window.scrollY - triggers.ref03}
+          toNegative={toNegative}
+        />
       </BodyBlock>
       <BodyBlock bgColor={red[50]}>
         <div style={{ height: '150vh' }}>footer</div>

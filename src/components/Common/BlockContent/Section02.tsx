@@ -1,4 +1,4 @@
-import React, { memo, useEffect, useState } from 'react';
+import React, { memo } from 'react';
 import { styled } from '@mui/material/styles';
 import Image from '@Components/Base/Image';
 import type { Section02Props } from './types';
@@ -20,32 +20,18 @@ const CenterContainer = styled('div')(() => ({
 
 function Section02(props: Section02Props): React.ReactElement {
   // States
-  const { imgSrc, blockRef, inViewport } = props;
-  const [triggerPosition, setTriggerPosition] = useState<number>(0);
-  const [offsetY, setOffsetY] = useState<number>(0);
-
-  // Functions
-  const handleOffset = (): void => {
-    if (triggerPosition && window.scrollY - triggerPosition > 0)
-      setOffsetY(window.scrollY - triggerPosition);
-  };
-
-  // Hooks
-  useEffect(() => {
-    if (blockRef.current) {
-      setTriggerPosition(blockRef.current.getBoundingClientRect().top);
-    }
-  }, [blockRef]);
-  useEffect(() => {
-    window.addEventListener('scroll', handleOffset);
-    () => () => window.removeEventListener('scroll', handleOffset);
-  }, [triggerPosition]);
+  const { imgSrc, inViewport, offsetY, toNegative } = props;
 
   // Main
   return (
     <Base className="SectionBase">
       <CenterContainer>
-        <Image src={imgSrc} inViewport={inViewport} offsetY={offsetY} />
+        <Image
+          src={imgSrc}
+          inViewport={inViewport}
+          offsetY={offsetY}
+          toNegative={toNegative}
+        />
       </CenterContainer>
       <CenterContainer>
         <div>
