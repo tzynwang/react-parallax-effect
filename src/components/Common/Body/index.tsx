@@ -1,9 +1,9 @@
-import React, { memo, useRef, useState, useEffect } from 'react';
+import React, { memo, useRef, useMemo, useState, useEffect } from 'react';
 import { styled } from '@mui/material/styles';
-import { red, purple } from '@mui/material/colors';
+import { red, purple, amber } from '@mui/material/colors';
 import Image from '@Components/Base/Image';
+import StaticImage from '@Components/Base/StaticImage';
 import BodyBlock from '@Components/Common/BodyBlock';
-import useScrollNegative from '@Hooks/useScrollNegative';
 import useViewportHeight from '@Hooks/useViewportHeight';
 import useWindowScrollTop from '@Hooks/useWindowScrollTop';
 import type { BlocksInVP, TriggerPoints } from './types';
@@ -11,7 +11,21 @@ import type { BlocksInVP, TriggerPoints } from './types';
 const BodyContainer = styled('div')(() => ({
   backgroundColor: purple[50],
 }));
-
+const StaticSection = styled('div')(({ theme }) => ({
+  display: 'block',
+  [theme.breakpoints.up('md')]: {
+    display: 'none',
+  },
+}));
+const StaticBlock = styled('div')(() => ({
+  padding: '24px',
+}));
+const ScrollAnimationSection = styled('div')(({ theme }) => ({
+  display: 'none',
+  [theme.breakpoints.up('md')]: {
+    display: 'flex',
+  },
+}));
 const ImageContainer = styled('div')(() => ({
   height: '300vh',
   width: '100%',
@@ -20,6 +34,11 @@ const ImageContainer = styled('div')(() => ({
 }));
 const TextContainer = styled('div')(() => ({
   flex: '1 1 40%',
+}));
+const TextBlock = styled('div')(() => ({
+  height: '100vh',
+  display: 'flex',
+  alignItems: 'center',
 }));
 
 const BLOCK_IN_VP: BlocksInVP = {
@@ -38,15 +57,12 @@ function Body(): React.ReactElement {
   const [inVP, setInVP] = useState<BlocksInVP>(BLOCK_IN_VP);
   const [trigger, setTrigger] = useState<TriggerPoints>(TRIGGER_POINTS);
   const [currentSec, setCurrentSec] = useState<string>('');
-  const scrollNegative = useScrollNegative();
   const vpHeight = useViewportHeight();
   const scrollTop = useWindowScrollTop();
 
   // Functions
   const handleScroll = (): void => {
-    if (!block01Ref.current) {
-      return;
-    }
+    if (!block01Ref.current) return;
     if (
       block01Ref.current.getBoundingClientRect().top < 1 &&
       block01Ref.current.getBoundingClientRect().bottom > 1
@@ -83,66 +99,79 @@ function Body(): React.ReactElement {
     }
   }, [scrollTop, trigger]);
 
+  // Views
+  const imgSrc = useMemo(() => {
+    console.info(currentSec);
+    if (currentSec === 'ref03') {
+      return 'https://cdn.stocksnap.io/img-thumbs/960w/animals-cats_UCS90HFBJL.jpg';
+    }
+    if (currentSec === 'ref02') {
+      return 'https://cdn.stocksnap.io/img-thumbs/960w/animals-cats_H2G3Y61IGJ.jpg';
+    }
+    return 'https://cdn.stocksnap.io/img-thumbs/960w/animals-feline_GWKZ6SI2ED.jpg';
+  }, [currentSec]);
+
   // Main
   return (
     <BodyContainer>
-      <BodyBlock bgColor={red[50]}>another block</BodyBlock>
-      <div style={{ display: 'flex' }}>
+      <BodyBlock bgColor={red[50]}>landing block</BodyBlock>
+      {/* static content: theme.breakpoints.down('md') */}
+      <StaticSection className="StaticSection">
+        <StaticBlock>
+          <StaticImage src="https://cdn.stocksnap.io/img-thumbs/960w/animals-feline_GWKZ6SI2ED.jpg" />
+          <div>
+            Lorem ipsum dolor sit amet consectetur adipisicing elit. Maxime
+            labore magni, blanditiis quos omnis neque dolore eius aperiam, sint
+            dicta, culpa eos velit modi reprehenderit quam nemo. Aliquam,
+            debitis quae.
+          </div>
+        </StaticBlock>
+        <StaticBlock>
+          <StaticImage src="https://cdn.stocksnap.io/img-thumbs/960w/animals-cats_H2G3Y61IGJ.jpg" />
+          <div>
+            Lorem ipsum dolor sit amet consectetur adipisicing elit. Maxime
+            labore magni, blanditiis quos omnis neque dolore eius aperiam, sint
+            dicta, culpa eos velit modi reprehenderit quam nemo. Aliquam,
+            debitis quae.
+          </div>
+        </StaticBlock>
+        <StaticBlock>
+          <StaticImage src="https://cdn.stocksnap.io/img-thumbs/960w/animals-cats_UCS90HFBJL.jpg" />
+          <div>
+            Lorem ipsum dolor sit amet consectetur adipisicing elit. Maxime
+            labore magni, blanditiis quos omnis neque dolore eius aperiam, sint
+            dicta, culpa eos velit modi reprehenderit quam nemo. Aliquam,
+            debitis quae.
+          </div>
+        </StaticBlock>
+      </StaticSection>
+      {/* scroll animation: theme.breakpoints.up('md') */}
+      <ScrollAnimationSection className="ScrollAnimationSection">
         <ImageContainer ref={block01Ref}>
-          <Image
-            src="https://cdn.stocksnap.io/img-thumbs/960w/animals-feline_GWKZ6SI2ED.jpg"
-            className="ref01"
-            currentSec={currentSec}
-            scrollNegative={scrollNegative}
-            inVP={inVP.ref01}
-          />
-          <Image
-            src="https://cdn.stocksnap.io/img-thumbs/960w/animals-cats_H2G3Y61IGJ.jpg"
-            className="ref02"
-            currentSec={currentSec}
-          />
-          <Image
-            src="https://cdn.stocksnap.io/img-thumbs/960w/animals-cats_UCS90HFBJL.jpg"
-            className="ref03"
-            currentSec={currentSec}
-          />
+          <Image src={imgSrc} inVP={inVP.ref01} currentSec={currentSec} />
         </ImageContainer>
         <TextContainer>
-          <div
-            style={{
-              height: '100vh',
-              display: 'flex',
-              alignItems: 'center',
-            }}
-          >
+          <TextBlock>
             Lorem ipsum dolor sit amet, consectetur adipisicing elit. Corporis
             quas eum, praesentium quod totam distinctio porro asperiores neque
             minima repellendus magnam dolor voluptate alias deleniti facilis
             dicta vel laborum illo?
-          </div>
-          <div
-            style={{ height: '100vh', display: 'flex', alignItems: 'center' }}
-          >
+          </TextBlock>
+          <TextBlock>
             Lorem ipsum dolor sit amet, consectetur adipisicing elit. Corporis
             quas eum, praesentium quod totam distinctio porro asperiores neque
             minima repellendus magnam dolor voluptate alias deleniti facilis
             dicta vel laborum illo?
-          </div>
-          <div
-            style={{
-              height: '100vh',
-              display: 'flex',
-              alignItems: 'center',
-            }}
-          >
+          </TextBlock>
+          <TextBlock>
             Lorem ipsum dolor sit amet, consectetur adipisicing elit. Corporis
             quas eum, praesentium quod totam distinctio porro asperiores neque
             minima repellendus magnam dolor voluptate alias deleniti facilis
             dicta vel laborum illo?
-          </div>
+          </TextBlock>
         </TextContainer>
-      </div>
-      <BodyBlock bgColor={red[50]}>another block</BodyBlock>
+      </ScrollAnimationSection>
+      <BodyBlock bgColor={amber[50]}>bottom block</BodyBlock>
     </BodyContainer>
   );
 }
