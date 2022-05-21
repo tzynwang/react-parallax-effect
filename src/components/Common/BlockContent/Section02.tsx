@@ -1,6 +1,6 @@
 import React, { memo } from 'react';
 import { styled } from '@mui/material/styles';
-import Image from '@Components/Base/Image';
+import Image from '@Components/Base/StaticImage';
 import type { Section02Props } from './types';
 
 const Base = styled('div')(({ theme }) => ({
@@ -8,14 +8,14 @@ const Base = styled('div')(({ theme }) => ({
   // flexDirection: 'column',
   gap: '16px',
   [theme.breakpoints.up('md')]: {
-    flexDirection: 'row',
-  },
+    flexDirection: 'row'
+  }
 }));
 const CenterContainer = styled('div')(() => ({
   // flex: '1 1 50%',
   // display: 'flex',
   justifyContent: 'center',
-  alignItems: 'center',
+  alignItems: 'center'
 }));
 
 function Section02(props: Section02Props): React.ReactElement {
@@ -26,12 +26,7 @@ function Section02(props: Section02Props): React.ReactElement {
   return (
     <Base className="SectionBase">
       <CenterContainer>
-        <Image
-          src={imgSrc}
-          startScrollEffect={inViewport}
-          scrollNegative={toNegative}
-          className={imgClasses}
-        />
+        <Image src={imgSrc} />
       </CenterContainer>
       <CenterContainer>
         <div>
