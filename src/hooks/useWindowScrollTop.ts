@@ -14,7 +14,7 @@ function useWindowScrollTop(): number {
   // Hooks
   useEffect(() => {
     window.addEventListener('scroll', debouncedHandleScroll);
-    () => () => window.removeEventListener('scroll', debouncedHandleScroll);
+    return () => window.removeEventListener('scroll', debouncedHandleScroll);
   }, []);
 
   // Main
