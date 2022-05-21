@@ -15,10 +15,10 @@ const Base = styled('div', {
   padding: '24px',
   backgroundColor: bgColor ? bgColor : 'transparent',
   [theme.breakpoints.up('md')]: {
-    minHeight: '100vh',
-    '&.AbsoluteCenter': {
-      display: 'flex',
-    },
+    height: '100vh',
+    // '&.AbsoluteCenter': {
+    //   display: 'flex',
+    // },
   },
 }));
 const Container = styled('div')(() => ({

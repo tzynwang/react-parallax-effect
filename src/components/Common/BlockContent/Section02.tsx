@@ -4,23 +4,23 @@ import Image from '@Components/Base/Image';
 import type { Section02Props } from './types';
 
 const Base = styled('div')(({ theme }) => ({
-  display: 'flex',
-  flexDirection: 'column',
+  // display: 'flex',
+  // flexDirection: 'column',
   gap: '16px',
   [theme.breakpoints.up('md')]: {
     flexDirection: 'row',
   },
 }));
 const CenterContainer = styled('div')(() => ({
-  flex: '1 1 50%',
-  display: 'flex',
+  // flex: '1 1 50%',
+  // display: 'flex',
   justifyContent: 'center',
   alignItems: 'center',
 }));
 
 function Section02(props: Section02Props): React.ReactElement {
   // States
-  const { imgSrc, inViewport, offsetY, toNegative } = props;
+  const { imgSrc, imgClasses, inViewport, offsetY, toNegative } = props;
 
   // Main
   return (
@@ -28,9 +28,9 @@ function Section02(props: Section02Props): React.ReactElement {
       <CenterContainer>
         <Image
           src={imgSrc}
-          inViewport={inViewport}
-          offsetY={offsetY}
-          toNegative={toNegative}
+          inVP={inViewport}
+          scrollNegative={toNegative}
+          className={imgClasses}
         />
       </CenterContainer>
       <CenterContainer>
