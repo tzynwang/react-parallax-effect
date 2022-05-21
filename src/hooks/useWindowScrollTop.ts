@@ -9,7 +9,7 @@ function useWindowScrollTop(): number {
   const handleScroll = (): void => {
     setTop(window.scrollY);
   };
-  const debouncedHandleScroll = debounce(handleScroll, 300);
+  const debouncedHandleScroll = debounce(handleScroll, 50);
 
   // Hooks
   useEffect(() => {
