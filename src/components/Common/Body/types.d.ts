@@ -1,7 +1,5 @@
-export interface BlocksInVP {
+export interface EffectFlag {
   ref01: boolean;
-  ref02: boolean;
-  ref03: boolean;
 }
 
 export interface TriggerPoints {

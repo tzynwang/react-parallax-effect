@@ -1,61 +1,78 @@
-import React, { memo, useRef, useState, useEffect } from 'react';
+import React, { memo, useRef, useMemo, useState, useEffect } from 'react';
 import { styled } from '@mui/material/styles';
 import { red, purple, amber } from '@mui/material/colors';
+import AnimationImage from '@Components/Base/AnimationImage';
+import StaticImage from '@Components/Base/StaticImage';
 import BodyBlock from '@Components/Common/BodyBlock';
-import { Section01, Section02 } from '@Components/Common/BlockContent';
-import useScrollNegative from '@Hooks/useScrollNegative';
 import useViewportHeight from '@Hooks/useViewportHeight';
-import type { BlocksInVP, TriggerPoints } from './types';
+import useWindowScrollTop from '@Hooks/useWindowScrollTop';
+import type { EffectFlag, TriggerPoints } from './types';
 
 const BodyContainer = styled('div')(() => ({
   paddingTop: '54px',
+  backgroundColor: red[50]
+}));
+const StaticSection = styled('div')(({ theme }) => ({
+  display: 'block',
+  [theme.breakpoints.up('md')]: {
+    display: 'none'
+  }
+}));
+const StaticBlock = styled('div')(() => ({
+  padding: '24px'
+}));
+const ScrollAnimationSection = styled('div')(({ theme }) => ({
+  display: 'none',
   backgroundColor: purple[50],
+  [theme.breakpoints.up('md')]: {
+    display: 'flex'
+  }
+}));
+const ImageContainer = styled('div')(() => ({
+  height: '300vh',
+  width: '100%',
+  position: 'relative',
+  flex: '1 1 60%'
+}));
+const TextContainer = styled('div')(() => ({
+  flex: '1 1 40%'
+}));
+const TextBlock = styled('div')(() => ({
+  height: '100vh',
+  display: 'flex',
+  alignItems: 'center'
 }));
 
-const BLOCK_IN_VP: BlocksInVP = {
-  ref01: false,
-  ref02: false,
-  ref03: false,
+const EFFECT_FLAG: EffectFlag = {
+  ref01: false
 };
 
 const TRIGGER_POINTS: TriggerPoints = {
   ref01: 0,
   ref02: 0,
-  ref03: 0,
+  ref03: 0
 };
 
 function Body(): React.ReactElement {
   // States
-  const block01Ref = useRef<HTMLDivElement | null>(null);
-  const block02Ref = useRef<HTMLDivElement | null>(null);
-  const block03Ref = useRef<HTMLDivElement | null>(null);
-  const [inVP, setInVP] = useState<BlocksInVP>(BLOCK_IN_VP);
-  const [triggers, setTriggers] = useState<TriggerPoints>(TRIGGER_POINTS);
+  const ScrollEffectBlockRef = useRef<HTMLDivElement | null>(null);
+  const [startScrollEffect, setStartScrollEffect] =
+    useState<EffectFlag>(EFFECT_FLAG);
+  const [trigger, setTrigger] = useState<TriggerPoints>(TRIGGER_POINTS);
+  const [currentSec, setCurrentSec] = useState<string>('');
   const vpHeight = useViewportHeight();
-  const toNegative = useScrollNegative();
+  const scrollTop = useWindowScrollTop();
 
   // Functions
   const handleScroll = (): void => {
-    if (!block01Ref.current || !block02Ref.current || !block03Ref.current) {
-      return;
-    }
+    if (!ScrollEffectBlockRef.current) return;
     if (
-      block03Ref.current.getBoundingClientRect().top < 1 &&
-      block03Ref.current.getBoundingClientRect().bottom > vpHeight * 0.75
+      ScrollEffectBlockRef.current.getBoundingClientRect().top < 1 &&
+      ScrollEffectBlockRef.current.getBoundingClientRect().bottom > 1
     ) {
-      setInVP({ ref01: false, ref02: false, ref03: true });
-    } else if (
-      block02Ref.current.getBoundingClientRect().top < 1 &&
-      block02Ref.current.getBoundingClientRect().bottom > vpHeight * 0.1
-    ) {
-      setInVP({ ref01: false, ref02: true, ref03: false });
-    } else if (
-      block01Ref.current.getBoundingClientRect().top < 1 &&
-      block01Ref.current.getBoundingClientRect().bottom > vpHeight * 0.1
-    ) {
-      setInVP({ ref01: true, ref02: false, ref03: false });
+      setStartScrollEffect({ ref01: true });
     } else {
-      setInVP({ ref01: false, ref02: false, ref03: false });
+      setStartScrollEffect({ ref01: false });
     }
   };
 
@@ -63,52 +80,108 @@ function Body(): React.ReactElement {
   useEffect(() => {
     window.addEventListener('scroll', handleScroll);
     return () => window.removeEventListener('scroll', handleScroll);
-  }, [block01Ref.current, block02Ref.current, block03Ref.current, vpHeight]);
+  }, [ScrollEffectBlockRef.current]);
   useEffect(() => {
-    if (inVP.ref03) {
-      setTriggers({ ref01: 0, ref02: 0, ref03: window.scrollY });
-    } else if (inVP.ref02) {
-      setTriggers({ ref01: 0, ref02: window.scrollY, ref03: 0 });
-    } else if (inVP.ref01) {
-      setTriggers({ ref01: window.scrollY, ref02: 0, ref03: 0 });
-    } else {
-      setTriggers({ ref01: 0, ref02: 0, ref03: 0 });
+    if (ScrollEffectBlockRef.current && vpHeight) {
+      setTrigger({
+        ref01: ScrollEffectBlockRef.current.getBoundingClientRect().top,
+        ref02:
+          ScrollEffectBlockRef.current.getBoundingClientRect().top + vpHeight,
+        ref03:
+          ScrollEffectBlockRef.current.getBoundingClientRect().top +
+          vpHeight * 2
+      });
     }
-  }, [inVP.ref01, inVP.ref02, inVP.ref03]);
+  }, [ScrollEffectBlockRef.current, vpHeight]);
+  useEffect(() => {
+    if (scrollTop > trigger.ref03) {
+      setCurrentSec('ref03');
+    } else if (scrollTop > trigger.ref02) {
+      setCurrentSec('ref02');
+    } else if (scrollTop > trigger.ref01) {
+      setCurrentSec('ref01');
+    } else {
+      setCurrentSec('');
+    }
+  }, [scrollTop, trigger]);
+
+  // Views
+  const imgSrc = useMemo(() => {
+    console.info(currentSec);
+    if (currentSec === 'ref03') {
+      return 'https://cdn.stocksnap.io/img-thumbs/960w/animals-cats_UCS90HFBJL.jpg';
+    }
+    if (currentSec === 'ref02') {
+      return 'https://cdn.stocksnap.io/img-thumbs/960w/animals-cats_H2G3Y61IGJ.jpg';
+    }
+    return 'https://cdn.stocksnap.io/img-thumbs/960w/animals-feline_GWKZ6SI2ED.jpg';
+  }, [currentSec]);
 
   // Main
   return (
     <BodyContainer>
-      <BodyBlock bgColor={purple[50]}>
-        <Section01 />
-      </BodyBlock>
-      <BodyBlock bgColor={amber[100]} ref={block01Ref} absoluteCenter>
-        <Section02
-          imgSrc="https://cdn.stocksnap.io/img-thumbs/960w/animals-feline_GWKZ6SI2ED.jpg"
-          inViewport={inVP.ref01}
-          offsetY={window.scrollY - triggers.ref01}
-          toNegative={toNegative}
-        />
-      </BodyBlock>
-      <BodyBlock bgColor={amber[100]} ref={block02Ref} absoluteCenter>
-        <Section02
-          imgSrc="https://cdn.stocksnap.io/img-thumbs/960w/animals-cats_H2G3Y61IGJ.jpg"
-          inViewport={inVP.ref02}
-          offsetY={window.scrollY - triggers.ref02}
-          toNegative={toNegative}
-        />
-      </BodyBlock>
-      <BodyBlock bgColor={amber[100]} ref={block03Ref} absoluteCenter>
-        <Section02
-          imgSrc="https://cdn.stocksnap.io/img-thumbs/960w/animals-cats_UCS90HFBJL.jpg"
-          inViewport={inVP.ref03}
-          offsetY={window.scrollY - triggers.ref03}
-          toNegative={toNegative}
-        />
-      </BodyBlock>
-      <BodyBlock bgColor={red[50]}>
-        <div style={{ height: '150vh' }}>footer</div>
-      </BodyBlock>
+      <BodyBlock bgColor={red[50]}>landing block</BodyBlock>
+      {/* static content: theme.breakpoints.down('md') */}
+      <StaticSection className="StaticSection">
+        <StaticBlock>
+          <StaticImage src="https://cdn.stocksnap.io/img-thumbs/960w/animals-feline_GWKZ6SI2ED.jpg" />
+          <div>
+            Lorem ipsum dolor sit amet consectetur adipisicing elit. Maxime
+            labore magni, blanditiis quos omnis neque dolore eius aperiam, sint
+            dicta, culpa eos velit modi reprehenderit quam nemo. Aliquam,
+            debitis quae.
+          </div>
+        </StaticBlock>
+        <StaticBlock>
+          <StaticImage src="https://cdn.stocksnap.io/img-thumbs/960w/animals-cats_H2G3Y61IGJ.jpg" />
+          <div>
+            Lorem ipsum dolor sit amet consectetur adipisicing elit. Maxime
+            labore magni, blanditiis quos omnis neque dolore eius aperiam, sint
+            dicta, culpa eos velit modi reprehenderit quam nemo. Aliquam,
+            debitis quae.
+          </div>
+        </StaticBlock>
+        <StaticBlock>
+          <StaticImage src="https://cdn.stocksnap.io/img-thumbs/960w/animals-cats_UCS90HFBJL.jpg" />
+          <div>
+            Lorem ipsum dolor sit amet consectetur adipisicing elit. Maxime
+            labore magni, blanditiis quos omnis neque dolore eius aperiam, sint
+            dicta, culpa eos velit modi reprehenderit quam nemo. Aliquam,
+            debitis quae.
+          </div>
+        </StaticBlock>
+      </StaticSection>
+      {/* scroll animation: theme.breakpoints.up('md') */}
+      <ScrollAnimationSection className="ScrollAnimationSection">
+        <ImageContainer ref={ScrollEffectBlockRef}>
+          <AnimationImage
+            src={imgSrc}
+            startScrollEffect={startScrollEffect.ref01}
+            currentSec={currentSec}
+          />
+        </ImageContainer>
+        <TextContainer>
+          <TextBlock>
+            Lorem ipsum dolor sit amet, consectetur adipisicing elit. Corporis
+            quas eum, praesentium quod totam distinctio porro asperiores neque
+            minima repellendus magnam dolor voluptate alias deleniti facilis
+            dicta vel laborum illo?
+          </TextBlock>
+          <TextBlock>
+            Lorem ipsum dolor sit amet, consectetur adipisicing elit. Corporis
+            quas eum, praesentium quod totam distinctio porro asperiores neque
+            minima repellendus magnam dolor voluptate alias deleniti facilis
+            dicta vel laborum illo?
+          </TextBlock>
+          <TextBlock>
+            Lorem ipsum dolor sit amet, consectetur adipisicing elit. Corporis
+            quas eum, praesentium quod totam distinctio porro asperiores neque
+            minima repellendus magnam dolor voluptate alias deleniti facilis
+            dicta vel laborum illo?
+          </TextBlock>
+        </TextContainer>
+      </ScrollAnimationSection>
+      <BodyBlock bgColor={amber[50]}>bottom block</BodyBlock>
     </BodyContainer>
   );
 }
