@@ -6,7 +6,7 @@ import StaticImage from '@Components/Base/StaticImage';
 import BodyBlock from '@Components/Common/BodyBlock';
 import useViewportHeight from '@Hooks/useViewportHeight';
 import useWindowScrollTop from '@Hooks/useWindowScrollTop';
-import type { BlocksInVP, TriggerPoints } from './types';
+import type { EffectFlag, TriggerPoints } from './types';
 
 const BodyContainer = styled('div')(() => ({
   backgroundColor: purple[50],
@@ -41,7 +41,7 @@ const TextBlock = styled('div')(() => ({
   alignItems: 'center',
 }));
 
-const BLOCK_IN_VP: BlocksInVP = {
+const EFFECT_FLAG: EffectFlag = {
   ref01: false,
 };
 
@@ -53,8 +53,8 @@ const TRIGGER_POINTS: TriggerPoints = {
 
 function Body(): React.ReactElement {
   // States
-  const block01Ref = useRef<HTMLDivElement | null>(null);
-  const [inVP, setInVP] = useState<BlocksInVP>(BLOCK_IN_VP);
+  const ScrollEffectBlockRef = useRef<HTMLDivElement | null>(null);
+  const [startScrollEffect, setStartScrollEffect] =useState<EffectFlag>(EFFECT_FLAG);
   const [trigger, setTrigger] = useState<TriggerPoints>(TRIGGER_POINTS);
   const [currentSec, setCurrentSec] = useState<string>('');
   const vpHeight = useViewportHeight();
@@ -62,14 +62,14 @@ function Body(): React.ReactElement {
 
   // Functions
   const handleScroll = (): void => {
-    if (!block01Ref.current) return;
+    if (!ScrollEffectBlockRef.current) return;
     if (
-      block01Ref.current.getBoundingClientRect().top < 1 &&
-      block01Ref.current.getBoundingClientRect().bottom > 1
+      ScrollEffectBlockRef.current.getBoundingClientRect().top < 1 &&
+      ScrollEffectBlockRef.current.getBoundingClientRect().bottom > 1
     ) {
-      setInVP({ ref01: true });
+      setStartScrollEffect({ ref01: true });
     } else {
-      setInVP({ ref01: false });
+      setStartScrollEffect({ ref01: false });
     }
   };
 
@@ -77,16 +77,16 @@ function Body(): React.ReactElement {
   useEffect(() => {
     window.addEventListener('scroll', handleScroll);
     return () => window.removeEventListener('scroll', handleScroll);
-  }, [block01Ref.current]);
+  }, [ScrollEffectBlockRef.current]);
   useEffect(() => {
-    if (block01Ref.current && vpHeight) {
+    if (ScrollEffectBlockRef.current && vpHeight) {
       setTrigger({
-        ref01: block01Ref.current.getBoundingClientRect().top,
-        ref02: block01Ref.current.getBoundingClientRect().top + vpHeight,
-        ref03: block01Ref.current.getBoundingClientRect().top + vpHeight * 2,
+        ref01: ScrollEffectBlockRef.current.getBoundingClientRect().top,
+        ref02: ScrollEffectBlockRef.current.getBoundingClientRect().top + vpHeight,
+        ref03: ScrollEffectBlockRef.current.getBoundingClientRect().top + vpHeight * 2,
       });
     }
-  }, [block01Ref.current, vpHeight]);
+  }, [ScrollEffectBlockRef.current, vpHeight]);
   useEffect(() => {
     if (scrollTop > trigger.ref03) {
       setCurrentSec('ref03');
@@ -147,8 +147,12 @@ function Body(): React.ReactElement {
       </StaticSection>
       {/* scroll animation: theme.breakpoints.up('md') */}
       <ScrollAnimationSection className="ScrollAnimationSection">
-        <ImageContainer ref={block01Ref}>
-          <Image src={imgSrc} inVP={inVP.ref01} currentSec={currentSec} />
+        <ImageContainer ref={ScrollEffectBlockRef}>
+          <Image
+            src={imgSrc}
+            startScrollEffect={startScrollEffect.ref01}
+            currentSec={currentSec}
+          />
         </ImageContainer>
         <TextContainer>
           <TextBlock>

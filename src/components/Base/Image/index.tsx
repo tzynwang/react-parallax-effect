@@ -2,14 +2,14 @@ import { styled } from '@mui/material/styles';
 
 interface ImgProps {
   src: string;
-  inVP?: boolean;
+  startScrollEffect?: boolean;
   currentSec?: string;
 }
 
 export default styled('img', {
   shouldForwardProp: (prop) =>
-    prop !== 'src' && prop !== 'inVP' && prop !== 'currentSec',
-})<ImgProps>(({ src, inVP, currentSec, theme }) => ({
+    prop !== 'src' && prop !== 'startScrollEffect' && prop !== 'currentSec',
+})<ImgProps>(({ src, startScrollEffect, currentSec, theme }) => ({
   height: '100%',
   width: '100%',
   position: 'static',
@@ -29,8 +29,33 @@ export default styled('img', {
     height: '400px',
     width: 'calc(100% - 48px)',
     marginLeft: '24px',
-    position: inVP ? 'sticky' : 'absolute',
-    top: inVP ? 'calc(50% - 200px)' : 'calc(50vh)',
-    transform: inVP ? 'translateY(0)' : 'translateY(-50%)',
+    position: (() => {
+      if (currentSec === 'ref03') {
+        return 'absolute';
+      } else if (startScrollEffect) {
+        return 'sticky';
+      } else {
+        return 'absolute';
+      }
+    })(),
+    top: (() => {
+      if (currentSec === 'ref03') {
+        return 'auto';
+      } else if (startScrollEffect) {
+        return 'calc(50% - 200px)';
+      } else {
+        return 'calc(50vh)';
+      }
+    })(),
+    bottom: currentSec === 'ref03' ? 0 : 'unset',
+    transform: (() => {
+      if (currentSec === 'ref03') {
+        return 'translateY(-50%)';
+      } else if (startScrollEffect) {
+        return 'translateY(0)';
+      } else {
+        return 'translateY(-50%)';
+      }
+    })(),
   },
 }));

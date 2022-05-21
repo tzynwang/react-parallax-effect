@@ -28,7 +28,7 @@ function Section02(props: Section02Props): React.ReactElement {
       <CenterContainer>
         <Image
           src={imgSrc}
-          inVP={inViewport}
+          startScrollEffect={inViewport}
           scrollNegative={toNegative}
           className={imgClasses}
         />

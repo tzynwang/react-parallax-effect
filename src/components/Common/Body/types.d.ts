@@ -1,4 +1,4 @@
-export interface BlocksInVP {
+export interface EffectFlag {
   ref01: boolean;
 }
 
