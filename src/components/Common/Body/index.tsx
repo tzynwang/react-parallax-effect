@@ -1,7 +1,7 @@
 import React, { memo, useRef, useMemo, useState, useEffect } from 'react';
 import { styled } from '@mui/material/styles';
 import { red, purple, amber } from '@mui/material/colors';
-import Image from '@Components/Base/Image';
+import AnimationImage from '@Components/Base/AnimationImage';
 import StaticImage from '@Components/Base/StaticImage';
 import BodyBlock from '@Components/Common/BodyBlock';
 import useViewportHeight from '@Hooks/useViewportHeight';
@@ -9,52 +9,53 @@ import useWindowScrollTop from '@Hooks/useWindowScrollTop';
 import type { EffectFlag, TriggerPoints } from './types';
 
 const BodyContainer = styled('div')(() => ({
-  backgroundColor: purple[50],
+  backgroundColor: purple[50]
 }));
 const StaticSection = styled('div')(({ theme }) => ({
   display: 'block',
   [theme.breakpoints.up('md')]: {
-    display: 'none',
-  },
+    display: 'none'
+  }
 }));
 const StaticBlock = styled('div')(() => ({
-  padding: '24px',
+  padding: '24px'
 }));
 const ScrollAnimationSection = styled('div')(({ theme }) => ({
   display: 'none',
   [theme.breakpoints.up('md')]: {
-    display: 'flex',
-  },
+    display: 'flex'
+  }
 }));
 const ImageContainer = styled('div')(() => ({
   height: '300vh',
   width: '100%',
   position: 'relative',
-  flex: '1 1 60%',
+  flex: '1 1 60%'
 }));
 const TextContainer = styled('div')(() => ({
-  flex: '1 1 40%',
+  flex: '1 1 40%'
 }));
 const TextBlock = styled('div')(() => ({
   height: '100vh',
   display: 'flex',
-  alignItems: 'center',
+  alignItems: 'center'
 }));
 
 const EFFECT_FLAG: EffectFlag = {
-  ref01: false,
+  ref01: false
 };
 
 const TRIGGER_POINTS: TriggerPoints = {
   ref01: 0,
   ref02: 0,
-  ref03: 0,
+  ref03: 0
 };
 
 function Body(): React.ReactElement {
   // States
   const ScrollEffectBlockRef = useRef<HTMLDivElement | null>(null);
-  const [startScrollEffect, setStartScrollEffect] =useState<EffectFlag>(EFFECT_FLAG);
+  const [startScrollEffect, setStartScrollEffect] =
+    useState<EffectFlag>(EFFECT_FLAG);
   const [trigger, setTrigger] = useState<TriggerPoints>(TRIGGER_POINTS);
   const [currentSec, setCurrentSec] = useState<string>('');
   const vpHeight = useViewportHeight();
@@ -82,8 +83,11 @@ function Body(): React.ReactElement {
     if (ScrollEffectBlockRef.current && vpHeight) {
       setTrigger({
         ref01: ScrollEffectBlockRef.current.getBoundingClientRect().top,
-        ref02: ScrollEffectBlockRef.current.getBoundingClientRect().top + vpHeight,
-        ref03: ScrollEffectBlockRef.current.getBoundingClientRect().top + vpHeight * 2,
+        ref02:
+          ScrollEffectBlockRef.current.getBoundingClientRect().top + vpHeight,
+        ref03:
+          ScrollEffectBlockRef.current.getBoundingClientRect().top +
+          vpHeight * 2
       });
     }
   }, [ScrollEffectBlockRef.current, vpHeight]);
@@ -148,7 +152,7 @@ function Body(): React.ReactElement {
       {/* scroll animation: theme.breakpoints.up('md') */}
       <ScrollAnimationSection className="ScrollAnimationSection">
         <ImageContainer ref={ScrollEffectBlockRef}>
-          <Image
+          <AnimationImage
             src={imgSrc}
             startScrollEffect={startScrollEffect.ref01}
             currentSec={currentSec}
