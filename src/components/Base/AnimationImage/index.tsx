@@ -6,7 +6,7 @@ interface ImgProps {
   currentSec?: string;
 }
 
-export default styled('img', {
+export default styled('div', {
   shouldForwardProp: (prop) =>
     prop !== 'src' && prop !== 'startScrollEffect' && prop !== 'currentSec',
 })<ImgProps>(({ src, startScrollEffect, currentSec, theme }) => ({
