@@ -8,7 +8,7 @@ interface ImgProps {
 
 export default styled('div', {
   shouldForwardProp: (prop) =>
-    prop !== 'src' && prop !== 'startScrollEffect' && prop !== 'currentSec',
+    prop !== 'src' && prop !== 'startScrollEffect' && prop !== 'currentSec'
 })<ImgProps>(({ src, startScrollEffect, currentSec, theme }) => ({
   height: '100%',
   width: '100%',
@@ -38,24 +38,8 @@ export default styled('div', {
         return 'absolute';
       }
     })(),
-    top: (() => {
-      if (currentSec === 'ref03') {
-        return 'auto';
-      } else if (startScrollEffect) {
-        return 'calc(50% - 200px)';
-      } else {
-        return 'calc(50vh)';
-      }
-    })(),
+    top: currentSec === 'ref03' ? 'auto' : '50vh',
     bottom: currentSec === 'ref03' ? 0 : 'unset',
-    transform: (() => {
-      if (currentSec === 'ref03') {
-        return 'translateY(-50%)';
-      } else if (startScrollEffect) {
-        return 'translateY(0)';
-      } else {
-        return 'translateY(-50%)';
-      }
-    })(),
-  },
+    transform: 'translateY(-50%)'
+  }
 }));
