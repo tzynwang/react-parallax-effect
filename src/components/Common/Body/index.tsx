@@ -9,7 +9,8 @@ import useWindowScrollTop from '@Hooks/useWindowScrollTop';
 import type { EffectFlag, TriggerPoints } from './types';
 
 const BodyContainer = styled('div')(() => ({
-  backgroundColor: purple[50]
+  paddingTop: '54px',
+  backgroundColor: red[50]
 }));
 const StaticSection = styled('div')(({ theme }) => ({
   display: 'block',
@@ -22,6 +23,7 @@ const StaticBlock = styled('div')(() => ({
 }));
 const ScrollAnimationSection = styled('div')(({ theme }) => ({
   display: 'none',
+  backgroundColor: purple[50],
   [theme.breakpoints.up('md')]: {
     display: 'flex'
   }
