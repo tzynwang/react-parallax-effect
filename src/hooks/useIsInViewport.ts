@@ -17,7 +17,7 @@ function useIsInViewport(target: React.RefObject<HTMLDivElement>): boolean {
   // Hooks
   useEffect(() => {
     window.addEventListener('scroll', debouncedHandleScroll);
-    () => () => window.removeEventListener('scroll', debouncedHandleScroll);
+    return () => window.removeEventListener('scroll', debouncedHandleScroll);
   }, [target.current, viewportHeight]);
 
   // Main

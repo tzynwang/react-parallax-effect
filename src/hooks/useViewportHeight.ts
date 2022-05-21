@@ -15,7 +15,7 @@ function useViewportHeight(): number {
   useEffect(() => {
     setInnerHeight(window.innerHeight);
     window.addEventListener('resize', debouncedHandleResize);
-    () => () => window.removeEventListener('resize', debouncedHandleResize);
+    return () => window.removeEventListener('resize', debouncedHandleResize);
   }, []);
 
   // Main
